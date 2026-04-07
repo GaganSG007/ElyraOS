@@ -1,103 +1,79 @@
-# ElyraOS - Virtual Environment Operating System
+# ✨ ElyraOS
 
-A modern, web-based operating system interface built with Next.js, featuring an integrated file explorer for showcasing creative work including vertical stories, cinematic cuts, and various media links.
+A web-based operating system experience where creative work exists inside a virtual desktop.
 
-## Features
+---
 
-- **Desktop Interface**: Windows-style OS with taskbar, windows, and desktop icons
-- **File Explorer**: Browse through different folders and view media galleries
-- **Internal Browser**: Open links in integrated browser windows with fallback for blocked content
-- **Responsive Design**: Built with Tailwind CSS for a sleek, futuristic look
+## 🖥️ Overview
 
-## Showcase Your Work
+ElyraOS is a browser-based interface designed to feel like a real computer system.
+Instead of navigating a typical website, users interact with a desktop environment that includes windows, folders, and a file explorer.
 
-This app is designed to showcase your portfolio/work through the file explorer. Add your links (Instagram reels, YouTube videos, Google Drive files, etc.) to the data files:
+The main highlight is the **D: local disk**, which contains a collection of video editing work presented as files inside a virtual system.
 
-- `src/data/verticalLinks.js` - For vertical aspect ratio content (reels, stories)
-- `src/data/horizontalLinks.js` - For horizontal aspect ratio content (videos, cuts)
+---
 
-Each link entry supports:
-- `url`: The full URL to your work
-- `thumbnail`: Path to a preview image (place in `public/Images/thumbnails/`)
-- `title`: Display title for the item
+## 💡 Experience
 
-## Getting Started
+ElyraOS replaces scrolling with interaction.
 
-### Prerequisites
-- Node.js 18+
-- npm or yarn
+Users can:
 
-### Installation
-1. Clone the repository
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
+* Open a desktop-style interface
+* Launch the File Explorer
+* Navigate to the D: drive
+* Browse video edits as if they are stored on a real machine
+* Open files inside movable windows
 
-### Running Locally
-1. Start the development server:
-   ```bash
-   npm run dev
-   ```
-2. Open [http://localhost:3000](http://localhost:3000) in your browser
+This creates a more natural and engaging way to explore creative work.
 
-### Building for Production
-1. Build the app:
-   ```bash
-   npm run build
-   ```
-2. Start the production server:
-   ```bash
-   npm start
-   ```
+---
 
-## Deployment
+## 🎬 Content
 
-### Vercel (Recommended)
-1. Push your code to GitHub
-2. Connect your repo to [Vercel](https://vercel.com)
-3. Deploy automatically
+The D: drive acts as the core of the experience.
 
-### Other Platforms
-- Netlify
-- Railway
-- Heroku
+It includes:
 
-## Adding Content
+* Vertical edits such as reels and short-form content
+* Horizontal edits such as cinematic videos and cuts
 
-### Manual Addition
-Use the in-app form in the File Explorer to add links manually.
+Each item behaves like a file, making the interaction feel familiar and intuitive.
 
-### Code Addition
-Edit the data files directly:
+---
 
-```javascript
-// src/data/verticalLinks.js
-export const verticalLinks = [
-  {
-    url: 'https://www.instagram.com/reel/...',
-    thumbnail: '/Images/thumbnails/my-work.jpg',
-    title: 'My Amazing Reel',
-  },
-  // Add more...
-];
-```
+## 🎨 Design
 
-## Browser Compatibility
+* OS-inspired interface
+* Window-based navigation
+* Smooth animations and transitions
+* Clean and modern visual style
 
-For best experience:
-- Instagram/Facebook links open in new tabs (due to platform iframe restrictions)
-- YouTube videos embed directly
-- Google Drive links open in new tabs
+---
 
-## Technologies Used
+## 🛠️ Built With
 
-- **Next.js** - React framework
-- **TypeScript** - Type safety
-- **Tailwind CSS** - Styling
-- **Framer Motion** - Animations
-- **React Context** - State management
+* Next.js
+* TypeScript
+* Tailwind CSS
+* Framer Motion
 
-## License
+---
 
-This project is private and for personal use.
+## 🌌 Concept
+
+The idea behind ElyraOS is simple.
+
+A portfolio should feel like using a system, not browsing a page.
+
+---
+
+## 👤 Author
+
+Gagan S G
+
+---
+
+## ⭐
+
+If you like the project, consider giving it a star.
