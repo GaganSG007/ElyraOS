@@ -1,14 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0f0f10;
+  --background: #a8d8e8;
   --foreground: #ffffff;
-  --surface: rgba(255,255,255,0.06);
-  --accent: #7c3aed; /* deeper purple */
-  --accent-2: #a78bfa; /* softer lavender */
-  --accent-3: #10b981; /* emerald green */
-  --border-glow: rgba(167, 139, 250, 0.4); /* lavender glow */
-  --hover-glow: rgba(124, 58, 237, 0.3); /* purple glow */
+  --surface: rgba(255,255,255,0.04);
+  --accent: #00a8a8; /* teal from wallpaper */
+  --accent-2: #2b9a9a; /* darker teal */
+  --accent-3: #6ba3d4; /* light blue from wallpaper */
+  --border-glow: rgba(43, 154, 154, 0.2); /* teal glow */
+  --hover-glow: rgba(0, 168, 168, 0.15); /* bright teal glow */
 }
 
 @theme inline {
@@ -18,6 +18,31 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* Mobile-first: prevent zoom and ensure touch-friendly UI */
+* {
+  box-sizing: border-box;
+  touch-action: manipulation;
+  -webkit-user-drag: none;
+  user-select: none;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+* ::-webkit-scrollbar {
+  display: none;
+}
+
+html, body, #__next {
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
@@ -25,8 +50,21 @@ body {
   min-height: 100vh;
 }
 
-* {
-  box-sizing: border-box;
+/* Allow text selection in inputs and content areas */
+input, textarea, [contenteditable] {
+  user-select: text;
+  -webkit-user-drag: auto;
+}
+
+/* Prevent image dragging */
+img {
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+
+/* Allow pointer events on interactive images */
+button img, a img {
+  pointer-events: auto;
 }
 
 .slider::-webkit-slider-thumb {

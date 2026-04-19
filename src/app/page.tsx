@@ -63,7 +63,7 @@ function HomeContent() {
                   window={window}
                   onClose={closeWindow}
                 >
-                  {window.type === 'explorer' && <FileExplorerView />}
+                  {window.type === 'explorer' && <FileExplorerView initialFolder={window.data?.mediaFolder} initialView={window.data?.initialView} />}
                   {window.type === 'browser' && window.data?.url && (
                     <BrowserWindow
                       url={window.data.url}

@@ -20,7 +20,15 @@ export default function Taskbar() {
   const [contextPos, setContextPos] = useState({ x: 0, y: 0 });
   const [startMenuOpen, setStartMenuOpen] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
   const taskbarRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const pinnedApps = useMemo(
     () => [
@@ -47,7 +55,7 @@ export default function Taskbar() {
         now.toLocaleTimeString('en-US', {
           hour: '2-digit',
           minute: '2-digit',
-          hour12: false,
+          hour12: true,
         })
       );
     };
@@ -98,74 +106,85 @@ export default function Taskbar() {
 
   return (
     <>
+      <style jsx>{`
+        .mobile-scroll-icons {
+          -webkit-overflow-scrolling: touch;
+          scroll-behavior: smooth;
+        }
+
+        .mobile-scroll-icons::-webkit-scrollbar {
+          display: none;
+        }
+
+        .mobile-scroll-icons {
+          scrollbar-width: none;
+        }
+      `}</style>
       <div
         ref={taskbarRef}
-        className="fixed bottom-0 left-0 right-0 h-16 backdrop-blur-2xl bg-white/6 border-t border-purple-300/40 shadow-lg flex items-center px-4 gap-3 z-50"
+        className={`fixed bottom-4 left-1/2 transform -translate-x-1/2 backdrop-blur-3xl bg-gradient-to-b from-white/20 to-white/5 shadow-2xl flex items-center justify-between z-50 rounded-3xl border border-white/15 ${isMobile ? 'h-18 px-3' : 'h-14 px-6'}`}
+        style={{ touchAction: 'manipulation' }}
       >
+        {/* Start Button */}
         <button
           onClick={() => setStartMenuOpen((prev) => !prev)}
-          className="px-4 py-1 rounded-full bg-white text-purple-400 shadow-md hover:shadow-lg hover:shadow-purple-500/30 transition-all duration-200 hover:scale-105"
+          className={`rounded-lg bg-gradient-to-b from-cyan-600/50 to-cyan-700/40 backdrop-blur-3xl text-white shadow-lg hover:shadow-xl hover:from-cyan-600/60 hover:to-cyan-700/50 transition-all duration-200 hover:scale-105 font-medium whitespace-nowrap flex-shrink-0 border border-cyan-400/30 ${isMobile ? 'px-2 py-1 text-[10px]' : 'px-3 py-1.5 text-xs'}`}
+          style={{ touchAction: 'manipulation' }}
         >
           Elyra
         </button>
 
-        <div className="absolute left-1/2 transform -translate-x-1/2 flex gap-3 items-end pb-1">
+        {/* Center Icons - Desktop: Centered with animation, Mobile: Horizontal scroll */}
+        <div className={isMobile ? 'flex gap-2 items-center flex-1 overflow-x-auto mobile-scroll-icons pb-1 ml-3' : 'flex gap-2 items-end flex-1 justify-center pb-2 mx-4'}>
           {pinnedApps.map((app, index) => {
             const { scale, translateY } = clampScale(index, hoveredIndex);
             return (
               <button
                 key={app.name}
-                onMouseEnter={() => setHoveredIndex(index)}
-                onMouseLeave={() => setHoveredIndex(null)}
-                onMouseDown={() => {}}
-                className="flex items-center justify-center text-xs transition-all duration-300"
+                onMouseEnter={() => !isMobile && setHoveredIndex(index)}
+                onMouseLeave={() => !isMobile && setHoveredIndex(null)}
+                onClick={() => {}}
+                className="flex items-center justify-center transition-all duration-300 flex-shrink-0"
                 style={{
-                  transform: `scale(${scale}) translateY(${translateY}px)`,
-                  transition: 'transform 250ms cubic-bezier(0.25, 0.8, 0.25, 1)',
+                  transform: isMobile ? `scale(1) translateY(0px)` : `scale(${scale}) translateY(${translateY}px)`,
+                  transition: 'transform 350ms cubic-bezier(0.34, 1.56, 0.64, 1)',
+                  touchAction: 'manipulation',
                 }}
+                title={app.name}
               >
-                <img src={app.icon} alt={app.name} className="w-8 h-8 object-contain" />
+                <img src={app.icon} alt={app.name} className={isMobile ? 'w-7 h-7 object-contain' : 'w-8 h-8 object-contain'} />
               </button>
             );
           })}
 
-          {/* Grouped File Explorer Windows */}
+          {/* File Explorer Window */}
           {windows.filter(w => w.title.includes('File Explorer')).length > 0 && (
-            <div className="relative">
-              <button
-                onMouseEnter={() => setHoveredIndex(pinnedApps.length)}
-                onMouseLeave={() => setHoveredIndex(null)}
-                onMouseDown={() => openWindow('explorer', 'File Explorer')}
-                className="flex items-center justify-center text-xs transition-all duration-300"
-                style={{
-                  transform: `scale(${hoveredIndex === pinnedApps.length ? 1.5 : 1}) translateY(${hoveredIndex === pinnedApps.length ? -6 : 0}px)`,
-                  transition: 'transform 250ms cubic-bezier(0.25, 0.8, 0.25, 1)',
-                }}
-              >
-                <svg className="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.89 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/>
-                </svg>
-              </button>
-              {hoveredIndex === pinnedApps.length && (
-                <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 bg-black/80 backdrop-blur-md rounded-lg p-2 shadow-xl border border-white/20">
-                  <div className="flex gap-1">
-                    {windows.filter(w => w.title.includes('File Explorer')).map((windowItem, idx) => (
-                      <button
-                        key={windowItem.id}
-                        onClick={() => handleWindowClick(windowItem.id)}
-                        className="w-16 h-12 bg-gray-700 rounded text-xs text-white hover:bg-gray-600 transition-colors"
-                      >
-                        PC {idx + 1}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
+            <button
+              onMouseEnter={() => !isMobile && setHoveredIndex(pinnedApps.length)}
+              onMouseLeave={() => !isMobile && setHoveredIndex(null)}
+              onClick={() => {
+                const explorerWindow = windows.find(w => w.title.includes('File Explorer'));
+                if (explorerWindow) {
+                  handleWindowClick(explorerWindow.id);
+                }
+              }}
+              className="flex items-center justify-center transition-all duration-300 flex-shrink-0"
+              style={{
+                transform: isMobile ? `scale(1) translateY(0px)` : `scale(${hoveredIndex === pinnedApps.length ? 1.5 : 1}) translateY(${hoveredIndex === pinnedApps.length ? -6 : 0}px)`,
+                transition: 'transform 350ms cubic-bezier(0.34, 1.56, 0.64, 1)',
+                touchAction: 'manipulation',
+              }}
+              title="File Explorer"
+            >
+              <svg className={isMobile ? 'w-7 h-7' : 'w-8 h-8'} viewBox="0 0 24 24" fill="currentColor">
+                <path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.89 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/>
+              </svg>
+            </button>
           )}
         </div>
 
-        <div className="ml-auto text-xs text-white/80">{time}</div>
+        {/* Time Display */}
+        {!isMobile && <div className="text-xs text-cyan-50/40 font-medium ml-2">{time}</div>}
       </div>
 
       {startMenuOpen && (
@@ -174,34 +193,32 @@ export default function Taskbar() {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 10 }}
           transition={{ duration: 0.2 }}
-          className="fixed bottom-16 left-4 w-80 rounded-xl bg-white/6 backdrop-blur-2xl border border-purple-300/40 shadow-xl p-4 z-40"
+          className={`fixed rounded-2xl bg-gradient-to-b from-cyan-950/70 to-cyan-900/60 backdrop-blur-3xl shadow-2xl p-6 z-40 border border-cyan-400/40 ${isMobile ? 'bottom-24 left-2 right-2 w-auto' : 'bottom-20 left-1/2 transform -translate-x-1/2 w-80'}`}
         >
-          <p className="text-sm text-white font-semibold mb-3">Recently Opened</p>
-          <ul className="space-y-2 text-xs text-purple-200">
-            <li className="flex items-center gap-2 hover:bg-white/10 rounded px-2 py-1 transition-all duration-200 hover:scale-105 cursor-pointer">
-              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.89 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/>
-              </svg>
-              File Explorer
-            </li>
-            <li className="flex items-center gap-2 hover:bg-white/10 rounded px-2 py-1 transition-all duration-200 hover:scale-105 cursor-pointer">
-              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                <circle cx="12" cy="12" r="10"/><path d="M8 14l8-4-8-4v8z"/>
-              </svg>
-              Video Player
-            </li>
-            <li className="flex items-center gap-2 hover:bg-white/10 rounded px-2 py-1 transition-all duration-200 hover:scale-105 cursor-pointer">
-              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0L19.2 12l-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/>
-              </svg>
-              Design Studio
-            </li>
-          </ul>
-          <div className="mt-4 border-t border-purple-300/30 pt-3">
-            <p className="text-sm text-white">About</p>
-            <p className="text-sm text-purple-200">Contact</p>
+          <div className="space-y-4">
+            <div>
+              <h2 className="text-lg font-bold text-white">GAGAN S G</h2>
+              <p className="text-xs text-cyan-200/80 mt-1">Freelancer • Graphic Designer • Video Editor</p>
+            </div>
+            
+            <div className="border-t border-white/10 pt-3">
+              <p className="text-xs text-cyan-100/90 leading-relaxed">
+                Portfolio to showcase my video editing skills. Transforming ideas into stunning visual content with precision and creativity.
+              </p>
+            </div>
+            
+            <div className="border-t border-white/10 pt-3 space-y-2">
+              <div className="text-[11px]">
+                <p className="text-cyan-200/70">📧 gagansg2506@gmail.com</p>
+                <p className="text-cyan-200/70">📍 Bengaluru, India</p>
+                <p className="text-cyan-200/70">🔗 github.com/GaganSG007</p>
+              </div>
+            </div>
+            
+            <div className="border-t border-white/10 pt-3">
+              <p className="text-[10px] text-cyan-100/60 italic">Bringing visualized ideas to life. One frame at a time. ✨</p>
+            </div>
           </div>
-          <div className="mt-4 text-[11px] text-purple-300">System running smoothly 🚀</div>
         </motion.div>
       )}
 

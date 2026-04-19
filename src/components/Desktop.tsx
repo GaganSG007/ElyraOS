@@ -10,36 +10,43 @@ export default function Desktop() {
   };
 
   return (
-    <div className="absolute inset-0 bg-cover bg-center animate-desktop-pan" style={{ backgroundImage: 'url(/Images/Elyra.jpg)' }}>
+    <div 
+      className="fixed inset-0 overflow-hidden" 
+      style={{ 
+        backgroundImage: 'url(/Images/Elyra.png)',
+        backgroundPosition: 'center',
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat',
+        backgroundAttachment: 'fixed',
+        touchAction: 'none',
+        overscrollBehavior: 'none',
+      }}
+    >
       <style jsx>{`
-        @keyframes desktopPan {
-          0% { background-position: 52% 48%; }
-          50% { background-position: 48% 52%; }
-          100% { background-position: 52% 48%; }
-        }
-
-        .animate-desktop-pan {
-          animation: desktopPan 22s ease-in-out infinite;
-          will-change: background-position;
-        }
+        /* Beautiful static wallpaper displayed on all devices */
       `}</style>
-      {/* Desktop icons */}
-      <div className="fixed left-6 top-6 flex flex-col gap-8">
+
+      {/* Desktop icons - positioned absolutely within the fixed Desktop container */}
+      <div className="absolute left-4 top-4 flex flex-col gap-4 z-10">
         {/* This PC */}
         <button
           onClick={handleThisPCClick}
-          className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-white/10 transition-colors"
+          className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-white/10 active:bg-white/15 transition-all duration-200 backdrop-blur-sm"
+          style={{ touchAction: 'manipulation' }}
         >
-          <div className="text-5xl">💻</div>
-          <span className="text-xs text-white font-medium text-center max-w-16">
+          <div className="text-3xl md:text-4xl">💻</div>
+          <span className="text-[10px] md:text-xs text-white/80 font-medium text-center max-w-16">
             This PC
           </span>
         </button>
 
         {/* Recycle Bin */}
-        <button className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-white/10 transition-colors">
-          <div className="text-5xl">🗑️</div>
-          <span className="text-xs text-white font-medium text-center">Recycle Bin</span>
+        <button 
+          className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-white/10 active:bg-white/15 transition-all duration-200 backdrop-blur-sm"
+          style={{ touchAction: 'manipulation' }}
+        >
+          <div className="text-3xl md:text-4xl">🗑️</div>
+          <span className="text-[10px] md:text-xs text-white/80 font-medium text-center">Recycle Bin</span>
         </button>
       </div>
     </div>

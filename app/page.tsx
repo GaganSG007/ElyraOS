@@ -14,7 +14,7 @@ function HomeContent() {
   const { windows, closeWindow } = useWindowManager();
 
   return (
-    <main className="w-full h-screen overflow-hidden bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900">
+    <main className="fixed inset-0 overflow-hidden" style={{ backgroundImage: 'url(/Images/Elyra.png)', backgroundPosition: 'center', backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundAttachment: 'fixed' }}>
       {/* Boot screen */}
       {!booted && <BootScreen onComplete={() => setBooted(true)} />}
 

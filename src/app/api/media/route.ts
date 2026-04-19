@@ -22,8 +22,11 @@ export async function GET() {
     const detectOrientation = (fileName: string, folderName: string): 'horizontal' | 'vertical' | 'unknown' => {
       const lower = fileName.toLowerCase();
       const folderLower = folderName.toLowerCase();
-      if (/reel/.test(lower) || /reel/.test(folderLower) || /video/.test(lower) || /video/.test(folderLower)) {
+      if (/reel/.test(lower) || /reel/.test(folderLower)) {
         return 'vertical';
+      }
+      if (/cinema|cut/.test(lower) || /cinema|cut/.test(folderLower)) {
+        return 'horizontal';
       }
       if (/vertical|portrait|vert/.test(lower) || /vertical|portrait|vert/.test(folderLower)) {
         return 'vertical';

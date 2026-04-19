@@ -27,6 +27,22 @@ export function WindowManagerProvider({ children }: { children: React.ReactNode 
 
   const openWindow = useCallback(
     (type: WindowType, title: string, data?: Record<string, any>) => {
+      // Check if a window of this type already exists
+      const existingWindow = windows.find((w) => w.type === type);
+      
+      if (existingWindow) {
+        // Focus the existing window instead of creating a duplicate
+        setWindows((prev) =>
+          prev.map((w) =>
+            w.id === existingWindow.id
+              ? { ...w, zIndex: nextZIndex, isMinimized: false }
+              : w
+          )
+        );
+        setNextZIndex((prev) => prev + 1);
+        return existingWindow.id;
+      }
+
       const id = `${type}-${windowCounter}`;
       setWindowCounter((prev) => prev + 1);
 
@@ -43,6 +59,8 @@ export function WindowManagerProvider({ children }: { children: React.ReactNode 
           ? { width: data.width, height: data.height }
           : type === 'explorer'
           ? { width: 700, height: 500 }
+          : type === 'video'
+          ? { width: 1000, height: 700 }
           : { width: 800, height: 600 },
         zIndex: nextZIndex,
         isMinimized: false,
@@ -54,7 +72,7 @@ export function WindowManagerProvider({ children }: { children: React.ReactNode 
       setWindows((prev) => [...prev, newWindow]);
       return id;
     },
-    [windowCounter, nextZIndex]
+    [windowCounter, nextZIndex, windows]
   );
 
   const closeWindow = useCallback((id: string) => {
