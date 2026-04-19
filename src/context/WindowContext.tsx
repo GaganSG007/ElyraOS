@@ -59,7 +59,7 @@ export function WindowManagerProvider({ children }: { children: React.ReactNode 
           ? { width: data.width, height: data.height }
           : type === 'explorer'
           ? { width: 700, height: 500 }
-          : type === 'video'
+          : type === 'player'
           ? { width: 1000, height: 700 }
           : { width: 800, height: 600 },
         zIndex: nextZIndex,
