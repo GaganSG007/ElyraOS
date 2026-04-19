@@ -167,7 +167,6 @@ export default function FileExplorer() {
         <div className="flex h-full">
           <div className="w-64 bg-white/10 backdrop-blur-sm border-r border-white/20 p-4">
             <div className="space-y-2">
-              <div className="px-3 py-2 text-xs font-semibold text-purple-200 uppercase tracking-wide">Quick Access</div>
               {['Documents', 'Videos'].map((item) => (
                 <div
                   key={item}
