@@ -274,12 +274,6 @@ export default function FileExplorerView({ initialFolder, initialView }: { initi
                 className="px-3 py-2 text-sm text-white hover:bg-white/10 rounded cursor-pointer transition-all duration-200 hover:scale-105"
                 onClick={() => setQuickMessage('This section is not available in this system')}
               >
-                Quick Access
-              </div>
-              <div
-                className="px-3 py-2 text-sm text-white hover:bg-white/10 rounded cursor-pointer transition-all duration-200 hover:scale-105"
-                onClick={() => setQuickMessage('This section is not available in this system')}
-              >
                 Documents
               </div>
               <div
