@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     images: ["/preview.png"],
   },
   icons: {
-    icon: "/Images/Local Disk C.png",
+    icon: "/Images/Local Disk C.svg",
   },
 };
 
