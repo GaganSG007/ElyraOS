@@ -6,7 +6,7 @@ export default function Desktop() {
   const { openWindow } = useWindowManager();
 
   const handleThisPCClick = () => {
-    openWindow('explorer', 'File Explorer');
+    openWindow('explorer', 'ElyraOS');
   };
 
   return (

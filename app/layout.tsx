@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "VE OS - Media Gallery",
+  title: "ElyraOS",
   description: "Steam-style media gallery experience",
   viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover",
   themeColor: "#1e293b",
@@ -22,10 +22,10 @@ export const metadata: Metadata = {
     statusBarStyle: "black-translucent",
   },
   openGraph: {
-    title: "VE OS - Media Gallery",
+    title: "ElyraOS",
     description: "Experience a futuristic OS-inspired portfolio",
     url: "https://elyra-os.vercel.app",
-    siteName: "VE OS",
+    siteName: "ElyraOS",
     images: [
       {
         url: "/preview.png",
@@ -37,12 +37,12 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "VE OS - Media Gallery",
+    title: "ElyraOS",
     description: "A futuristic OS-style portfolio",
     images: ["/preview.png"],
   },
   icons: {
-    icon: "/favicon.ico",
+    icon: "/Images/Local Disk C.png",
   },
 };
 
